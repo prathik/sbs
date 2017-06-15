@@ -1,4 +1,5 @@
 # Salesforce Bulk Service
+[![Build Status](https://travis-ci.org/prathik/sbs.svg?branch=master)](https://travis-ci.org/prathik/sbs) [![Coverage Status](https://coveralls.io/repos/github/prathik/sbs/badge.svg?branch=master)](https://coveralls.io/github/prathik/sbs?branch=master)
 
 ## Features
 

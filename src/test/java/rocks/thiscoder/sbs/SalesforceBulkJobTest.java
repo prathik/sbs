@@ -178,6 +178,7 @@ public class SalesforceBulkJobTest {
         doReturn("https://sfb.thiscoder.rocks").when(salesforce).getInstance();
 
         SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient);
+        salesforceBulkJob.setJobId("abc");
         salesforceBulkJob.addBatch();
 
     }
