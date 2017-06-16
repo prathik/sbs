@@ -43,7 +43,7 @@ public class SBSController {
 
             XMLClient xmlClient = new XMLClient();
 
-            File file = new File("salesforce.properties");
+            File file = new File("src/main/resources/salesforce.properties");
             FileInputStream fileInput = new FileInputStream(file);
             Properties properties = new Properties();
             properties.load(fileInput);
