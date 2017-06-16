@@ -10,10 +10,6 @@ import lombok.Setter;
  */
 @RequiredArgsConstructor
 public class UploadRequest {
-    @NonNull
-    @Getter
-    @Setter
-    final String csv;
     @Getter
     @Setter
     @NonNull

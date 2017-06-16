@@ -1,5 +1,6 @@
 package rocks.thiscoder.http;
 
+import lombok.extern.slf4j.Slf4j;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -10,6 +11,7 @@ import java.nio.file.NoSuchFileException;
 /**
  * @author prathik.raj
  */
+@Slf4j
 public class FileClientTest {
     @Test
     void fileClientIntegrationTest() throws IOException {
@@ -20,7 +22,8 @@ public class FileClientTest {
                 "text/csv");
         FileClient fileClient = new FileClient();
         String fileContent = fileClient.uploadFile(fileUploadRequest);
-        Assert.assertTrue(fileContent.contains("header\\n1\\n2\\n3\""));
+        log.debug(fileContent);
+        Assert.assertTrue(fileContent.contains("Test__c\\nTest\\nTest1\\nTest2\\nTest3\\n\""));
     }
 
     @Test(expectedExceptions = NoSuchFileException.class)

@@ -6,12 +6,12 @@ import rocks.thiscoder.http.FileClient;
 import rocks.thiscoder.sbs.models.UploadRequest;
 import rocks.thiscoder.xml.XMLClient;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
@@ -20,9 +20,14 @@ import static org.mockito.Mockito.mock;
  */
 public class SalesforceBulkJobTest {
     final FileClient mockFileClient;
+    final File mockedFile;
 
     SalesforceBulkJobTest() {
         mockFileClient = mock(FileClient.class);
+        mockedFile = mock(File.class);
+        doReturn(true).when(mockedFile).isFile();
+        doReturn(true).when(mockedFile).exists();
+        doReturn("/tmp/abc.csv").when(mockedFile).getAbsolutePath();
     }
 
     @Test
@@ -31,7 +36,7 @@ public class SalesforceBulkJobTest {
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
         doReturn("https://sfb.thiscoder.rocks").when(salesforce).getInstance();
-        UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
         SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, mockFileClient);
         Assert.assertEquals(salesforceBulkJob.getXMLTemplate(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<jobInfo xmlns=\"http://www.force.com/2009/06/asyncapi/dataload\">\n" +
@@ -46,7 +51,7 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         Salesforce salesforce = mock(Salesforce.class);
         doReturn(null).when(salesforce).getSessionId();
-        UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
         SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, mockFileClient);
 
     }
@@ -57,7 +62,7 @@ public class SalesforceBulkJobTest {
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
         doReturn("https://sfb.thiscoder.rocks").when(salesforce).getInstance();
-        UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
         SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, mockFileClient);
         Assert.assertEquals(salesforceBulkJob.buildURL(), "https://sfb.thiscoder.rocks/services/async/40.0/job");
     }
@@ -69,7 +74,7 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
@@ -88,7 +93,7 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
@@ -106,7 +111,7 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
@@ -123,7 +128,7 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
@@ -142,7 +147,7 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
@@ -160,14 +165,14 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
         doReturn("https://sfb.thiscoder.rocks").when(salesforce).getInstance();
 
         SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, mockFileClient);
-        Batch batch = new Batch("abc.csv", salesforce);
+        Batch batch = new Batch(mockedFile, salesforce);
         salesforceBulkJob.addBatch(batch);
 
     }
@@ -179,15 +184,17 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
 
         Salesforce salesforce = mock(Salesforce.class);
         Salesforce salesforce1 = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
         doReturn("https://sfb.thiscoder.rocks").when(salesforce).getInstance();
+        doReturn("abc").when(salesforce1).getSessionId();
+        doReturn("https://sfb.thiscoder.rocks").when(salesforce1).getInstance();
 
         SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, mockFileClient);
-        Batch batch = new Batch("abc.csv", salesforce1);
+        Batch batch = new Batch(mockedFile, salesforce1);
         salesforceBulkJob.setJobId("123");
         salesforceBulkJob.addBatch(batch);
     }
@@ -200,14 +207,14 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
         doReturn("https://sfb.thiscoder.rocks").when(salesforce).getInstance();
 
         SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, mockFileClient);
-        Batch batch = new Batch("abc.csv", salesforce);
+        Batch batch = new Batch(mockedFile, salesforce);
         batch.setJobId("abc");
         salesforceBulkJob.setJobId("123");
         salesforceBulkJob.addBatch(batch);
@@ -221,36 +228,40 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest("Contact", "insert");
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
         doReturn("https://sfb.thiscoder.rocks").when(salesforce).getInstance();
 
         SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, mockFileClient);
-        Batch batch = new Batch("abc.csv", salesforce);
+        Batch batch = new Batch(mockedFile, salesforce);
         batch.setBatchId("abc");
         salesforceBulkJob.setJobId("123");
         salesforceBulkJob.addBatch(batch);
     }
 
-    @Test(enabled = false)
+    @Test
     void addBatchTest() throws IOException, SalesforceException {
-        byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/closeJobResponse.xml"));
-        String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
+        byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/createBatchResponse.xml"));
+        String xml = new String(encoded);
+        FileClient fileClient = mock(FileClient.class);
+        doReturn(xml).when(fileClient).uploadFile(any());
+
+        UploadRequest uploadRequest = new UploadRequest("Contact", "insert");
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
         doReturn("https://sfb.thiscoder.rocks").when(salesforce).getInstance();
 
-        SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, mockFileClient);
+        SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, fileClient);
         salesforceBulkJob.setJobId("abc");
-        Batch batch = new Batch("abc.csv", salesforce);
+        Batch batch = new Batch(mockedFile, salesforce);
         salesforceBulkJob.addBatch(batch);
+        Assert.assertEquals(batch.getJobId(), "abc");
+        Assert.assertEquals(batch.getBatchId(), "751S0000002P1fXIAS");
 
     }
 }

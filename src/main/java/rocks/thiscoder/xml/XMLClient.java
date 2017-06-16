@@ -1,5 +1,7 @@
 package rocks.thiscoder.xml;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -9,6 +11,7 @@ import java.net.URLConnection;
 /**
  * @author prathik.raj
  */
+@Slf4j
 public class XMLClient {
     /**
      * Makes a text/xml based request to the given end-point with the given content
@@ -47,6 +50,7 @@ public class XMLClient {
         {
             buf.append( cbuf, 0, num );
         }
+        log.debug("Response for XML Request: " + buf.toString());
         return buf.toString();
     }
 }

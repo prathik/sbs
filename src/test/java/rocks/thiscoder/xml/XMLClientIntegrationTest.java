@@ -47,4 +47,25 @@ public class XMLClientIntegrationTest {
         Assert.assertTrue(response.contains("X-Sfdc-Session"));
         Assert.assertTrue(response.contains("someSessionId!"));
     }
+
+    @Test
+    void postXMLForLoginTest() throws IOException {
+        XMLClient xmlClient = new XMLClient();
+        byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/closeJobResponse.xml"));
+        String xml = new String(encoded);
+        XMLRequest xmlRequest = new XMLRequest();
+        xmlRequest.setLogin(false);
+        xmlRequest.setContentType("text/xml");
+        xmlRequest.setContent(xml);
+        xmlRequest.setSessionId("someSessionId!");
+        xmlRequest.setLogin(true);
+        xmlRequest.setArgUrl("http://httpbin.org/post");
+        String response = xmlClient.makeRequest(xmlRequest);
+        log.debug(response);
+        Assert.assertTrue(response.contains("750S0000002bl3xIAA"));
+        Assert.assertTrue(response.contains("X-Sfdc-Session"));
+        Assert.assertTrue(response.contains("someSessionId!"));
+        Assert.assertTrue(response.contains("Soapaction"));
+        Assert.assertTrue(response.contains("login"));
+    }
 }

@@ -99,6 +99,7 @@ public class SalesforceBulkJob {
             Document doc = builder.parse(input);
             NodeList nodes = doc.getElementsByTagName("id");
             setJobId(nodes.item(0).getTextContent());
+            log.debug("Job ID: " + getJobId());
         } catch (IOException | ParserConfigurationException | SAXException e) {
             throw new SalesforceException(e);
         }
@@ -122,7 +123,7 @@ public class SalesforceBulkJob {
         }
 
         try {
-            FileUploadRequest fileUploadRequest = new FileUploadRequest(batch.getCsv(),
+            FileUploadRequest fileUploadRequest = new FileUploadRequest(batch.getCsv().getAbsolutePath(),
                     salesforce.getSessionId(),
                     getJobId(),
                     buildJobURL() + "/batch",
@@ -136,6 +137,7 @@ public class SalesforceBulkJob {
             Document doc = builder.parse(input);
             NodeList nodes = doc.getElementsByTagName("id");
             batch.setBatchId(nodes.item(0).getTextContent());
+            log.debug("Batch ID: " + batch.getBatchId());
         } catch (MalformedURLException e) {
             throw new SalesforceException("Invalid URL");
         } catch (IOException | ParserConfigurationException | SAXException e) {
