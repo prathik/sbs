@@ -61,9 +61,6 @@
                     <header>${project.name}, ${project.version}</header>
                     <footer>${project.name}, ${project.version}</footer>
                     <doctitle>${project.name}, ${project.version}</doctitle>
-                    <links>
-                        <link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api/</link>
-                    </links>
                 </configuration>
             </plugin>
             <plugin>
@@ -85,6 +82,7 @@
                 <version>2.7</version>
                 <configuration>
                     <format>xml</format>
+                    <format>html</format>
                     <maxmem>256m</maxmem>
                     <!-- aggregated reports for multi-module projects -->
                     <aggregate>true</aggregate>

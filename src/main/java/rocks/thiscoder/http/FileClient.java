@@ -20,9 +20,7 @@ public class FileClient {
         con.setUseCaches (false);
         con.setDefaultUseCaches (false);
         con.setRequestProperty ( "Content-Type", fileUploadRequest.getContentType() );
-        if(fileUploadRequest.getSessionId() != null) {
-            con.setRequestProperty ( "X-SFDC-Session",  fileUploadRequest.getSessionId());
-        }
+        con.setRequestProperty ( "X-SFDC-Session",  fileUploadRequest.getSessionId());
         OutputStream outputStream = con.getOutputStream();
         outputStream.write(Files.readAllBytes(Paths.get(fileUploadRequest.getCsv())) );
         outputStream.flush();
