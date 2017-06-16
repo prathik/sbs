@@ -7,7 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import rocks.thiscoder.sbs.models.JobResult;
+import rocks.thiscoder.http.FileClient;
+import rocks.thiscoder.http.FileUploadRequest;
 import rocks.thiscoder.sbs.models.UploadRequest;
 import rocks.thiscoder.xml.XMLClient;
 
@@ -20,7 +21,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 /**
  * @author prathik.raj
@@ -29,17 +29,22 @@ import java.util.List;
 @Slf4j
 public class SalesforceBulkJob {
     @NonNull final UploadRequest request;
+    @Getter
     @NonNull final Salesforce salesforce;
+
     @NonNull final XMLClient xmlClient;
+    @Getter
+    @NonNull final FileClient fileClient;
     @Getter
     @Setter
     String jobId;
 
-    public SalesforceBulkJob(UploadRequest request, Salesforce salesforce, XMLClient xmlClient)
+    public SalesforceBulkJob(UploadRequest request, Salesforce salesforce, XMLClient xmlClient, FileClient fileClient)
             throws SalesforceException {
         this.request = request;
         this.salesforce = salesforce;
         this.xmlClient = xmlClient;
+        this.fileClient = fileClient;
 
         if(salesforce.getSessionId() == null) {
             throw new SalesforceException("SessionID is null, has the login() method on Salesforce been called?");
@@ -93,14 +98,45 @@ public class SalesforceBulkJob {
         }
     }
 
-    void addBatch() throws SalesforceException {
+    void addBatch(@NonNull Batch batch) throws SalesforceException {
         if(getJobId() == null) {
             throw new SalesforceException("Job ID is null, this means that Job hasn't been created.");
         }
-    }
 
-    void checkStatus() {
+        if(batch.getSalesforce() != getSalesforce()) {
+            throw new SalesforceException("SF Client of batch and this instance are different.");
+        }
 
+        if(batch.getJobId() != null) {
+            throw new SalesforceException("Batch has a job id already!");
+        }
+
+        if(batch.getBatchId() != null) {
+            throw new SalesforceException("Batch already has a batch id, this batch has already been added.");
+        }
+
+        try {
+            FileUploadRequest fileUploadRequest = new FileUploadRequest(batch.getCsv(),
+                    salesforce.getSessionId(),
+                    getJobId(),
+                    buildJobURL() + "/batch",
+                    "text/csv");
+            String response = getFileClient().uploadFile(fileUploadRequest);
+            batch.setJobId(getJobId());
+            DocumentBuilderFactory factory =
+                    DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            ByteArrayInputStream input =  new ByteArrayInputStream(response.getBytes());
+            Document doc = builder.parse(input);
+            NodeList nodes = doc.getElementsByTagName("id");
+            batch.setBatchId(nodes.item(0).getTextContent());
+        } catch (MalformedURLException e) {
+            throw new SalesforceException("Invalid URL");
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            throw new SalesforceException(e);
+        } catch (NullPointerException e) {
+            throw new SalesforceException("File client responded with a null");
+        }
     }
 
     String closeJob() throws SalesforceException {
@@ -121,9 +157,5 @@ public class SalesforceBulkJob {
         } catch (IOException | ParserConfigurationException | SAXException e) {
             throw new SalesforceException(e);
         }
-    }
-
-    List<JobResult> retriveResult() {
-        return null;
     }
 }

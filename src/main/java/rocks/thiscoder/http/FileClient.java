@@ -13,7 +13,7 @@ import java.nio.file.Paths;
  * @author prathik.raj
  */
 public class FileClient {
-    String uploadFile(FileUploadRequest fileUploadRequest) throws IOException {
+    public String uploadFile(FileUploadRequest fileUploadRequest) throws IOException {
         URL url = new URL( fileUploadRequest.getUrl() );
         URLConnection con = url.openConnection();
         con.setDoInput(true);
