@@ -234,7 +234,7 @@ public class SalesforceBulkJobTest {
         salesforceBulkJob.addBatch(batch);
     }
 
-    @Test
+    @Test(enabled = false)
     void addBatchTest() throws IOException, SalesforceException {
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/closeJobResponse.xml"));
         String xml = new String(encoded);
