@@ -67,7 +67,7 @@ public class Salesforce {
      * Login to SF and store session id
      * @throws SalesforceException Thrown in case of any error
      */
-    void login() throws SalesforceException {
+    public void login() throws SalesforceException {
         try {
             XMLRequest xmlRequest = new XMLRequest();
             xmlRequest.setArgUrl(buildURL());

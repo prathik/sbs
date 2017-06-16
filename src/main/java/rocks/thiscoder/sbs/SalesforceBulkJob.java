@@ -83,7 +83,7 @@ public class SalesforceBulkJob {
     }
 
 
-    void createJob() throws SalesforceException {
+    public void createJob() throws SalesforceException {
         try {
             XMLRequest xmlRequest = new XMLRequest();
             xmlRequest.setLogin(false);
@@ -105,7 +105,7 @@ public class SalesforceBulkJob {
         }
     }
 
-    void addBatch(@NonNull Batch batch) throws SalesforceException {
+    public void addBatch(@NonNull Batch batch) throws SalesforceException {
         if(getJobId() == null) {
             throw new SalesforceException("Job ID is null, this means that Job hasn't been created.");
         }
