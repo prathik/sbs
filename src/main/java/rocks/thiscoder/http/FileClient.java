@@ -1,6 +1,11 @@
 package rocks.thiscoder.http;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
 import java.io.*;
+import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
@@ -9,10 +14,22 @@ import java.nio.file.Paths;
 /**
  * @author prathik.raj
  */
+@RequiredArgsConstructor
 public class FileClient {
+    @Setter
+    @Getter
+    Proxy proxy;
+
     public String uploadFile(FileUploadRequest fileUploadRequest) throws IOException {
         URL url = new URL( fileUploadRequest.getUrl() );
-        URLConnection con = url.openConnection();
+        URLConnection con;
+
+        if(getProxy() != null) {
+            con = url.openConnection(getProxy());
+        } else {
+            con = url.openConnection();
+        }
+
         con.setDoInput(true);
         con.setDoOutput(true);
         con.setConnectTimeout( 20000 );  // long timeout, but not infinite

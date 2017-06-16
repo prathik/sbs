@@ -11,6 +11,8 @@ import rocks.thiscoder.xml.XMLClient;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.*;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.Properties;
 
 /**
@@ -62,6 +64,14 @@ public class SBSController {
             salesforce.login();
             UploadRequest uploadRequest = new UploadRequest( object, type);
             FileClient fileClient = new FileClient();
+
+            if(properties.getProperty("proxyhost", null) != null
+                    && properties.getProperty("proxyport", null) != null) {
+                fileClient.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(
+                        properties.getProperty("proxyhost"),
+                        Integer.valueOf(properties.getProperty("proxyport")))));
+            }
+
             SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, fileClient);
             salesforceBulkJob.createJob();
             Batch b = new Batch(data, salesforce);

@@ -5,7 +5,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.nio.file.NoSuchFileException;
 
 /**
@@ -21,6 +23,21 @@ public class FileClientTest {
                 "http://httpbin.org/post",
                 "text/csv");
         FileClient fileClient = new FileClient();
+        String fileContent = fileClient.uploadFile(fileUploadRequest);
+        log.debug(fileContent);
+        Assert.assertTrue(fileContent.contains("Test__c\\nTest\\nTest1\\nTest2\\nTest3\\n\""));
+    }
+
+    @Test(enabled = false)
+    void fileClientIntegrationProxyTest() throws IOException {
+        FileUploadRequest fileUploadRequest = new FileUploadRequest("src/test/resources/data.csv",
+               "testSession",
+               "testJob",
+                "http://httpbin.org/post",
+                "text/csv");
+        FileClient fileClient = new FileClient();
+        fileClient.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("162.245.81.231",
+                8080)));
         String fileContent = fileClient.uploadFile(fileUploadRequest);
         log.debug(fileContent);
         Assert.assertTrue(fileContent.contains("Test__c\\nTest\\nTest1\\nTest2\\nTest3\\n\""));
