@@ -67,7 +67,7 @@ public class SalesforceBulkJobTest {
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/jobResponse.xml"));
         String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doReturn(xml).when(xmlClient).makeRequest(anyString(), anyString(), anyString(), any());
+        doReturn(xml).when(xmlClient).makeRequest(any());
 
         UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
 
@@ -86,7 +86,7 @@ public class SalesforceBulkJobTest {
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/closeJobResponse.xml"));
         String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doReturn(xml).when(xmlClient).makeRequest(anyString(), anyString(), anyString(), any());
+        doReturn(xml).when(xmlClient).makeRequest(any());
 
         UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
 
@@ -104,7 +104,7 @@ public class SalesforceBulkJobTest {
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/closeJobResponse.xml"));
         String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doReturn(xml).when(xmlClient).makeRequest(anyString(), anyString(), anyString(), any());
+        doReturn(xml).when(xmlClient).makeRequest(any());
 
         UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
 
@@ -121,7 +121,7 @@ public class SalesforceBulkJobTest {
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/closeJobResponse.xml"));
         String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doReturn(xml).when(xmlClient).makeRequest(anyString(), anyString(), anyString(), any());
+        doReturn(xml).when(xmlClient).makeRequest(any());
 
         UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
 
@@ -140,7 +140,7 @@ public class SalesforceBulkJobTest {
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/closeJobResponse.xml"));
         String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doReturn(xml).when(xmlClient).makeRequest(anyString(), anyString(), anyString(), any());
+        doReturn(xml).when(xmlClient).makeRequest(any());
 
         UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
 
@@ -158,7 +158,7 @@ public class SalesforceBulkJobTest {
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/closeJobResponse.xml"));
         String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doReturn(xml).when(xmlClient).makeRequest(anyString(), anyString(), anyString(), any());
+        doReturn(xml).when(xmlClient).makeRequest(any());
 
         UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
 
@@ -177,7 +177,7 @@ public class SalesforceBulkJobTest {
          byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/closeJobResponse.xml"));
         String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doReturn(xml).when(xmlClient).makeRequest(anyString(), anyString(), anyString(), any());
+        doReturn(xml).when(xmlClient).makeRequest(any());
 
         UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
 
@@ -198,7 +198,7 @@ public class SalesforceBulkJobTest {
          byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/closeJobResponse.xml"));
         String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doReturn(xml).when(xmlClient).makeRequest(anyString(), anyString(), anyString(), any());
+        doReturn(xml).when(xmlClient).makeRequest(any());
 
         UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
 
@@ -219,7 +219,7 @@ public class SalesforceBulkJobTest {
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/closeJobResponse.xml"));
         String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doReturn(xml).when(xmlClient).makeRequest(anyString(), anyString(), anyString(), any());
+        doReturn(xml).when(xmlClient).makeRequest(any());
 
         UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
 
@@ -239,7 +239,7 @@ public class SalesforceBulkJobTest {
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/closeJobResponse.xml"));
         String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doReturn(xml).when(xmlClient).makeRequest(anyString(), anyString(), anyString(), any());
+        doReturn(xml).when(xmlClient).makeRequest(any());
 
         UploadRequest uploadRequest = new UploadRequest("dummy.csv", "Contact", "insert");
 

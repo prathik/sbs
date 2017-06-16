@@ -11,6 +11,7 @@ import rocks.thiscoder.http.FileClient;
 import rocks.thiscoder.http.FileUploadRequest;
 import rocks.thiscoder.sbs.models.UploadRequest;
 import rocks.thiscoder.xml.XMLClient;
+import rocks.thiscoder.xml.XMLRequest;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -84,8 +85,13 @@ public class SalesforceBulkJob {
 
     void createJob() throws SalesforceException {
         try {
-            String response = xmlClient.makeRequest(buildURL(), getXMLTemplate(), "application/xml",
-                    salesforce.getSessionId());
+            XMLRequest xmlRequest = new XMLRequest();
+            xmlRequest.setLogin(false);
+            xmlRequest.setContentType("application/xml");
+            xmlRequest.setContent(getXMLTemplate());
+            xmlRequest.setArgUrl(buildURL());
+            xmlRequest.setSessionId(salesforce.getSessionId());
+            String response = xmlClient.makeRequest(xmlRequest);
             DocumentBuilderFactory factory =
                     DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -145,8 +151,14 @@ public class SalesforceBulkJob {
         }
 
         try {
-            String response = xmlClient.makeRequest(buildJobURL(), getCloseXMLTemplate(), "application/xml",
-                    salesforce.getSessionId());
+            XMLRequest xmlRequest = new XMLRequest();
+            xmlRequest.setLogin(false);
+            xmlRequest.setContentType("application/xml");
+            xmlRequest.setContent(getCloseXMLTemplate());
+            xmlRequest.setArgUrl(buildJobURL());
+            xmlRequest.setSessionId(salesforce.getSessionId());
+
+            String response = xmlClient.makeRequest(xmlRequest);
             DocumentBuilderFactory factory =
                     DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();

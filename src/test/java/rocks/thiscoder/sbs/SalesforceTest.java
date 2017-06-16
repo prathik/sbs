@@ -54,7 +54,7 @@ public class SalesforceTest {
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/loginResponse.xml"));
         String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doReturn(xml).when(xmlClient).makeRequest(anyString(), anyString(), anyString(), eq(null));
+        doReturn(xml).when(xmlClient).makeRequest(any());
         Salesforce salesforce = new Salesforce("prathik.raj", "password", Type.SANDBOX, xmlClient);
         salesforce.login();
         Assert.assertEquals(salesforce.getSessionId(), "00DS0000003E9ZE!ASAAQEpS5ELRQc2O1eb5mgCypof7g74sLD4jwa" +
@@ -68,8 +68,7 @@ public class SalesforceTest {
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/loginResponse.xml"));
         String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doThrow(new IOException("Error parsing XML")).when(xmlClient).makeRequest(anyString(), anyString(),
-                anyString(), eq(null));
+        doThrow(new IOException("Error parsing XML")).when(xmlClient).makeRequest(any());
         Salesforce salesforce = new Salesforce("prathik.raj", "password", Type.SANDBOX, xmlClient);
         salesforce.login();
 
@@ -80,7 +79,7 @@ public class SalesforceTest {
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/invalid.xml"));
         String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doReturn(xml).when(xmlClient).makeRequest(anyString(), anyString(), anyString(), eq(null));
+        doReturn(xml).when(xmlClient).makeRequest(any());
         Salesforce salesforce = new Salesforce("prathik.raj", "password", Type.SANDBOX, xmlClient);
         salesforce.login();
     }
@@ -90,7 +89,7 @@ public class SalesforceTest {
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/loginResponse.xml"));
         String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doReturn(xml).when(xmlClient).makeRequest(anyString(), anyString(), anyString(), eq(null));
+        doReturn(xml).when(xmlClient).makeRequest(any());
         Salesforce salesforce = new Salesforce("prathik.raj", "password", Type.SANDBOX, xmlClient);
         salesforce.setInstance("http://sfb.thiscoder.rocks:9090/abc");
         Assert.assertEquals(salesforce.getInstance(), "http://sfb.thiscoder.rocks:9090");
@@ -105,7 +104,7 @@ public class SalesforceTest {
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/loginResponse.xml"));
         String xml = new String(encoded);
         XMLClient xmlClient = mock(XMLClient.class);
-        doReturn(xml).when(xmlClient).makeRequest(anyString(), anyString(), anyString(), eq(null));
+        doReturn(xml).when(xmlClient).makeRequest(any());
         Salesforce salesforce = new Salesforce("prathik.raj", "password", Type.SANDBOX, xmlClient);
         salesforce.setInstance("abc");
     }

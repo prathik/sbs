@@ -9,6 +9,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import rocks.thiscoder.xml.XMLClient;
+import rocks.thiscoder.xml.XMLRequest;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -68,7 +69,12 @@ public class Salesforce {
      */
     void login() throws SalesforceException {
         try {
-            String response = xmlClient.makeRequest(buildURL(), getXMLTemplate(), "text/xml", null);
+            XMLRequest xmlRequest = new XMLRequest();
+            xmlRequest.setArgUrl(buildURL());
+            xmlRequest.setContent(getXMLTemplate());
+            xmlRequest.setContentType("text/xml");
+            xmlRequest.setLogin(true);
+            String response = xmlClient.makeRequest(xmlRequest);
             DocumentBuilderFactory factory =
                     DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();

@@ -20,7 +20,12 @@ public class XMLClientIntegrationTest {
         XMLClient xmlClient = new XMLClient();
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/closeJobResponse.xml"));
         String xml = new String(encoded);
-        String response = xmlClient.makeRequest("http://httpbin.org/post", xml, "text/xml", null);
+        XMLRequest xmlRequest = new XMLRequest();
+        xmlRequest.setLogin(false);
+        xmlRequest.setContentType("text/xml");
+        xmlRequest.setContent(xml);
+        xmlRequest.setArgUrl("http://httpbin.org/post");
+        String response = xmlClient.makeRequest(xmlRequest);
         log.debug(response);
         Assert.assertTrue(response.contains("750S0000002bl3xIAA"));
     }
@@ -30,7 +35,13 @@ public class XMLClientIntegrationTest {
         XMLClient xmlClient = new XMLClient();
         byte[] encoded = Files.readAllBytes(Paths.get("src/test/resources/closeJobResponse.xml"));
         String xml = new String(encoded);
-        String response = xmlClient.makeRequest("http://httpbin.org/post", xml, "text/xml", "someSessionId!");
+        XMLRequest xmlRequest = new XMLRequest();
+        xmlRequest.setLogin(false);
+        xmlRequest.setContentType("text/xml");
+        xmlRequest.setContent(xml);
+        xmlRequest.setSessionId("someSessionId!");
+        xmlRequest.setArgUrl("http://httpbin.org/post");
+        String response = xmlClient.makeRequest(xmlRequest);
         log.debug(response);
         Assert.assertTrue(response.contains("750S0000002bl3xIAA"));
         Assert.assertTrue(response.contains("X-Sfdc-Session"));

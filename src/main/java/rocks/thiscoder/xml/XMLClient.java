@@ -12,13 +12,12 @@ import java.net.URLConnection;
 public class XMLClient {
     /**
      * Makes a text/xml based request to the given end-point with the given content
-     * @param argUrl Url to make the request on
-     * @param content XML content
+     * @param request XML request object
      * @return Response from the endpoint
      * @throws IOException Error when unable to make the POST request
      */
-    public String makeRequest(String argUrl, String content, String contentType, String sessionId) throws IOException {
-        URL url = new URL( argUrl );
+    public String makeRequest(XMLRequest request) throws IOException {
+        URL url = new URL( request.getArgUrl() );
         URLConnection con = url.openConnection();
         con.setDoInput(true);
         con.setDoOutput(true);
@@ -26,13 +25,18 @@ public class XMLClient {
         con.setReadTimeout( 20000 );
         con.setUseCaches (false);
         con.setDefaultUseCaches (false);
-        con.setRequestProperty ( "Content-Type", contentType );
-        if(sessionId != null) {
-            con.setRequestProperty ( "X-SFDC-Session", sessionId );
+        con.setRequestProperty ( "Content-Type", request.getContentType() );
+        if(request.getSessionId() != null) {
+            con.setRequestProperty ( "X-SFDC-Session", request.getSessionId() );
         }
+
+        if(request.getLogin()) {
+            con.setRequestProperty("SOAPAction", "login");
+        }
+
         OutputStreamWriter writer = null;
         writer = new OutputStreamWriter( con.getOutputStream() );
-        writer.write( content );
+        writer.write( request.getContent() );
         writer.flush();
         writer.close();
         InputStreamReader reader = new InputStreamReader( con.getInputStream() );
