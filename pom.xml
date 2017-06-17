@@ -13,9 +13,7 @@
         <module>sbs</module>
     </modules>
 
-    <properties>
-        <jersey.version>2.25</jersey.version>
-    </properties>
+
 
     <build>
         <plugins>
