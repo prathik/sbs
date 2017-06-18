@@ -17,6 +17,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -40,7 +41,9 @@ public class Salesforce {
     @NonNull final XMLClient xmlClient;
 
     String getXMLTemplate() throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get("src/main/resources/templates/login.xml"));
+        URL url = getClass().getClassLoader().getResource("templates/login.xml");
+        log.debug("Template location: " + url.getPath());
+        byte[] encoded = Files.readAllBytes(Paths.get(url.getPath()));
         String xml = new String(encoded);
         xml = String.format(xml, username, password);
         return xml;

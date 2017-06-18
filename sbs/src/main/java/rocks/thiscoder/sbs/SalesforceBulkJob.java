@@ -57,14 +57,18 @@ public class SalesforceBulkJob {
     }
 
     String getXMLTemplate() throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get("src/main/resources/templates/job.xml"));
+        URL url = getClass().getClassLoader().getResource("templates/job.xml");
+        log.debug("Template location: " + url.getPath());
+        byte[] encoded = Files.readAllBytes(Paths.get(url.getPath()));
         String xml = new String(encoded);
         xml = String.format(xml, request.getType(), request.getSfObject());
         return xml;
     }
 
     String getCloseXMLTemplate() throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get("src/main/resources/templates/closeJob.xml"));
+        URL url = getClass().getClassLoader().getResource("templates/closeJob.xml");
+        log.debug("Template location: " + url.getPath());
+        byte[] encoded = Files.readAllBytes(Paths.get(url.getPath()));
         String xml = new String(encoded);
         xml = String.format(xml, request.getType(), request.getSfObject());
         return xml;

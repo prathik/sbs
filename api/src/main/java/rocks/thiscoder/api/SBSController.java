@@ -4,6 +4,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.FileBasedConfiguration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import rocks.thiscoder.http.FileClient;
@@ -59,31 +65,33 @@ public class SBSController {
 
             XMLClient xmlClient = new XMLClient();
 
-            File file = new File("src/main/resources/salesforce.properties");
-            FileInputStream fileInput = new FileInputStream(file);
-            Properties properties = new Properties();
-            properties.load(fileInput);
-            fileInput.close();
+            Parameters params = new Parameters();
+            FileBasedConfigurationBuilder<FileBasedConfiguration> builder =
+                    new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
+                            .configure(params.properties()
+                                    .setFileName("salesforce.properties"));
+
+            Configuration config = builder.getConfiguration();
 
             Type instanceType = Type.PRODUCTION;
 
-            if(properties.getProperty("type").equals("sandbox")) {
+            if(config.getString("type").equals("sandbox")) {
                 instanceType = Type.SANDBOX;
             }
 
-            Salesforce salesforce = new Salesforce(properties.getProperty("username"),
-                    properties.getProperty("password"),
+            Salesforce salesforce = new Salesforce(config.getString("username"),
+                    config.getString("password"),
                     instanceType,
                     xmlClient);
             salesforce.login();
             UploadRequest uploadRequest = new UploadRequest( object, type);
             FileClient fileClient = new FileClient();
 
-            if(properties.getProperty("proxyhost", null) != null
-                    && properties.getProperty("proxyport", null) != null) {
+            if(config.getString("proxyhost") != null
+                    && config.getString("proxyport") != null) {
                 fileClient.setProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(
-                        properties.getProperty("proxyhost"),
-                        Integer.valueOf(properties.getProperty("proxyport")))));
+                        config.getString("proxyhost"),
+                        config.getInt("proxyport"))));
             }
 
             SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, fileClient);
@@ -92,7 +100,7 @@ public class SBSController {
             salesforceBulkJob.addBatch(b);
             return b.getBatchId();
 
-        } catch (IOException | SalesforceException e) {
+        } catch (IOException | SalesforceException | ConfigurationException e) {
             return e.getMessage();
         }
 
