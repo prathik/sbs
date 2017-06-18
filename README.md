@@ -11,6 +11,20 @@
 
 ## Running
 
+You need to create `salesforce.properties` in `api/src/main/resources`.
+
+It contains the following properties.
+
+```properties
+username=sfusername
+password=sfpasswordwithtoken
+type=sandbox
+```
+
+Optional parameters are `proxyhost` and `proxyport` which make calls to Salesforce via proxy. This is useful in production environments where all calls have to go through proxy for security reasons.
+
+### Direct
+
 Do `mvn install` on the parent folder.
 
 Go to `api` folder and run `mvn package`, copy the generated `war` file into `jetty` or `tomcat`.
