@@ -7,3 +7,8 @@
 * Monitor status of upload job
 * Auto-retry on failure
 * Supports proxy
+* Swagger support, go to api/swagger.json
+
+## Running
+
+Do `mvn install` on the parent folder. Go to `api` folder and run `mvn package`, copy the generated `war` file into `jetty` or `tomcat`.
