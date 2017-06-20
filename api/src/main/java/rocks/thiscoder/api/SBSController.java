@@ -31,7 +31,7 @@ import java.util.Properties;
 @Path("/upload")
 @Api( value = "/upload", description = "Upload file to Salesforce")
 public class SBSController {
-    @Path("{object}/{type}")
+    @Path("{object}/{type}/{extobject}")
     @ApiOperation(
         value = "Upload documents to salesforce",
         response = String.class
@@ -45,7 +45,9 @@ public class SBSController {
             @ApiParam( value = "Operation type (currently only insert is supported)", required = true, name = "type" )
             @PathParam("type") String type,
             @ApiParam( value = "Salesforce object to which data is inserted", required = true, name = "object" )
-            @PathParam("object") String object
+            @PathParam("object") String object,
+            @ApiParam( value = "External object", required = true, name = "extobject" )
+            @PathParam("extobject") String extObject
     ) {
 
         String fileLocation = "/tmp/" + meta.getFileName();
@@ -84,7 +86,7 @@ public class SBSController {
                     instanceType,
                     xmlClient);
             salesforce.login();
-            UploadRequest uploadRequest = new UploadRequest( object, type);
+            UploadRequest uploadRequest = new UploadRequest( object, type, extObject);
             FileClient fileClient = new FileClient();
 
             if(config.getString("proxyhost") != null

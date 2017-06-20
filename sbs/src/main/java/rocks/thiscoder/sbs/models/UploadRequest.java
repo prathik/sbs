@@ -12,10 +12,11 @@ import lombok.Setter;
 public class UploadRequest {
     @Getter
     @Setter
-    @NonNull
     final String sfObject;
     @Getter
     @Setter
-    @NonNull
     final String type;
+    @Getter
+    @Setter
+    final String externalIdFieldName;
 }

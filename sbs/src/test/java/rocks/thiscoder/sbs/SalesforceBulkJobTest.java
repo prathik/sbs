@@ -36,7 +36,7 @@ public class SalesforceBulkJobTest {
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
         doReturn("https://sfb.thiscoder.rocks").when(salesforce).getInstance();
-        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert", null);
         SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, mockFileClient);
         Assert.assertEquals(salesforceBulkJob.getXMLTemplate(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<jobInfo xmlns=\"http://www.force.com/2009/06/asyncapi/dataload\">\n" +
@@ -46,12 +46,40 @@ public class SalesforceBulkJobTest {
                 "</jobInfo>");
     }
 
+    @Test
+    void generateJobXMLUpsertTest() throws IOException, SalesforceException {
+        XMLClient xmlClient = mock(XMLClient.class);
+        Salesforce salesforce = mock(Salesforce.class);
+        doReturn("abc").when(salesforce).getSessionId();
+        doReturn("https://sfb.thiscoder.rocks").when(salesforce).getInstance();
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "upsert", "EXT__c");
+        SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, mockFileClient);
+        Assert.assertEquals(salesforceBulkJob.getXMLTemplate(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<jobInfo xmlns=\"http://www.force.com/2009/06/asyncapi/dataload\">\n" +
+                "    <operation>upsert</operation>\n" +
+                "    <object>Contact</object>\n" +
+                "    <contentType>CSV</contentType>\n" +
+                "    <externalIdFieldName>EXT__c</externalIdFieldName>\n" +
+                "</jobInfo>");
+    }
+
+    @Test(expectedExceptions = SalesforceException.class, expectedExceptionsMessageRegExp = "Invalid type")
+    void generateJobXMLInvalidTypeTest() throws IOException, SalesforceException {
+        XMLClient xmlClient = mock(XMLClient.class);
+        Salesforce salesforce = mock(Salesforce.class);
+        doReturn("abc").when(salesforce).getSessionId();
+        doReturn("https://sfb.thiscoder.rocks").when(salesforce).getInstance();
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "abc", null);
+        SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, mockFileClient);
+        salesforceBulkJob.getXMLTemplate();
+    }
+
     @Test(expectedExceptions = SalesforceException.class)
     void errorOnNullSessionTest() throws IOException, SalesforceException {
         XMLClient xmlClient = mock(XMLClient.class);
         Salesforce salesforce = mock(Salesforce.class);
         doReturn(null).when(salesforce).getSessionId();
-        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert", null);
         SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, mockFileClient);
 
     }
@@ -62,7 +90,7 @@ public class SalesforceBulkJobTest {
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
         doReturn("https://sfb.thiscoder.rocks").when(salesforce).getInstance();
-        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert", null);
         SalesforceBulkJob salesforceBulkJob = new SalesforceBulkJob(uploadRequest, salesforce, xmlClient, mockFileClient);
         Assert.assertEquals(salesforceBulkJob.buildURL(), "https://sfb.thiscoder.rocks/services/async/40.0/job");
     }
@@ -74,7 +102,7 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert", null);
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
@@ -93,7 +121,7 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert", null);
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
@@ -111,7 +139,7 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert", null);
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
@@ -128,7 +156,7 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert", null);
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
@@ -147,7 +175,7 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert", null);
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
@@ -165,7 +193,7 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert", null);
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
@@ -184,7 +212,7 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert", null);
 
         Salesforce salesforce = mock(Salesforce.class);
         Salesforce salesforce1 = mock(Salesforce.class);
@@ -207,7 +235,7 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest( "Contact", "insert", null);
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
@@ -228,7 +256,7 @@ public class SalesforceBulkJobTest {
         XMLClient xmlClient = mock(XMLClient.class);
         doReturn(xml).when(xmlClient).makeRequest(any());
 
-        UploadRequest uploadRequest = new UploadRequest("Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest("Contact", "insert", null);
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();
@@ -250,7 +278,7 @@ public class SalesforceBulkJobTest {
         FileClient fileClient = mock(FileClient.class);
         doReturn(xml).when(fileClient).uploadFile(any());
 
-        UploadRequest uploadRequest = new UploadRequest("Contact", "insert");
+        UploadRequest uploadRequest = new UploadRequest("Contact", "insert", null);
 
         Salesforce salesforce = mock(Salesforce.class);
         doReturn("abc").when(salesforce).getSessionId();

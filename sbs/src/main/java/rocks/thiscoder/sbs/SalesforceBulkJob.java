@@ -56,13 +56,27 @@ public class SalesforceBulkJob {
         }
     }
 
-    String getXMLTemplate() throws IOException {
-        URL url = getClass().getClassLoader().getResource("templates/job.xml");
-        log.debug("Template location: " + url.getPath());
-        byte[] encoded = Files.readAllBytes(Paths.get(url.getPath()));
-        String xml = new String(encoded);
-        xml = String.format(xml, request.getType(), request.getSfObject());
-        return xml;
+    String getXMLTemplate() throws IOException, SalesforceException {
+        switch (request.getType()) {
+            case "insert": {
+                URL url = getClass().getClassLoader().getResource("templates/job.xml");
+                log.debug("Template location: " + url.getPath());
+                byte[] encoded = Files.readAllBytes(Paths.get(url.getPath()));
+                String xml = new String(encoded);
+                xml = String.format(xml, request.getType(), request.getSfObject());
+                return xml;
+            }
+            case "upsert": {
+                URL url = getClass().getClassLoader().getResource("templates/upsertJob.xml");
+                log.debug("Template location: " + url.getPath());
+                byte[] encoded = Files.readAllBytes(Paths.get(url.getPath()));
+                String xml = new String(encoded);
+                xml = String.format(xml, request.getType(), request.getSfObject(), request.getExternalIdFieldName());
+                return xml;
+            }
+            default:
+                throw new SalesforceException("Invalid type");
+        }
     }
 
     String getCloseXMLTemplate() throws IOException {
