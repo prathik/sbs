@@ -20,6 +20,7 @@ public class XMLClient {
      * @throws IOException Error when unable to make the POST request
      */
     public String makeRequest(XMLRequest request) throws IOException {
+        log.debug(request.toString());
         URL url = new URL( request.getArgUrl() );
         URLConnection con = url.openConnection();
         con.setDoInput(true);

@@ -58,8 +58,8 @@ public class SalesforceBulkJobTest {
                 "<jobInfo xmlns=\"http://www.force.com/2009/06/asyncapi/dataload\">\n" +
                 "    <operation>upsert</operation>\n" +
                 "    <object>Contact</object>\n" +
-                "    <contentType>CSV</contentType>\n" +
                 "    <externalIdFieldName>EXT__c</externalIdFieldName>\n" +
+                "    <contentType>CSV</contentType>\n" +
                 "</jobInfo>");
     }
 

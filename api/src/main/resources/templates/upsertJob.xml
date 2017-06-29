@@ -2,6 +2,6 @@
 <jobInfo xmlns="http://www.force.com/2009/06/asyncapi/dataload">
     <operation>%s</operation>
     <object>%s</object>
-    <contentType>CSV</contentType>
     <externalIdFieldName>%s</externalIdFieldName>
+    <contentType>CSV</contentType>
 </jobInfo>

@@ -15,6 +15,7 @@ ADD api service/api
 COPY pom.xml service
 RUN cd service && mvn clean && mvn install && cd api && mvn package
 RUN cp /service/api/target/api-1.0-SNAPSHOT.war /jetty-distribution-9.4.6.v20170531/webapps
+RUN apt-get update
 RUN apt-get install -y python-pip
 RUN pip install supervisor
 COPY supervisord.conf /etc/supervisor/supervisord.conf
